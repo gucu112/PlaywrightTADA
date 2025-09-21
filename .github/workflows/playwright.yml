@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
@@ -17,9 +18,18 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Load environment variables
+      uses: c-py/action-dotenv-to-setenv@v5
+      with:
+        env-file: default.env
+    - name: Show base URL
+      run: echo "Base URL is '$BASE_URL'"
     - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
+      env:
+        HEADED: 0
+      run: npm run test-arena
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report

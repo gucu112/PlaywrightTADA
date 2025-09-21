@@ -1,13 +1,17 @@
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'fs';
+import dotenv from 'dotenv';
+import path from 'path';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-import dotenv from 'dotenv';
-import path from 'path';
+var envFilePath = existsSync(path.resolve(__dirname, '.env'))
+	? path.resolve(__dirname, '.env')
+	: path.resolve(__dirname, 'default.env');
 dotenv.config({
-	path: path.resolve(__dirname, '.env'),
+	path: envFilePath,
 	quiet: true
 });
 
