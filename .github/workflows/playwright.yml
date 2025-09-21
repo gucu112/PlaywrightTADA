@@ -18,11 +18,16 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Load environment variables
+      uses: c-py/action-dotenv-to-setenv@v5
+      with:
+        env-file: default.env
     - name: Run Playwright tests
       env:
         HEADED: 0
       run: npm run test-arena
-    - uses: actions/upload-artifact@v4
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
