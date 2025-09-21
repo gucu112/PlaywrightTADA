@@ -22,6 +22,8 @@ jobs:
       uses: c-py/action-dotenv-to-setenv@v5
       with:
         env-file: default.env
+    - name: Show base URL
+      run: echo "Base URL is '$BASE_URL'"
     - name: Run Playwright tests
       env:
         HEADED: 0
